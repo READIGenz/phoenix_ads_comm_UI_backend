@@ -154,13 +154,9 @@ public class UploadExcelService {
 
             StringBuilder createTableQuery = new StringBuilder("CREATE TABLE " + tableName + " (");
 
-            if(tableName.equals("GS") || tableName.equals("SS") || tableName.equals("CD")){
-                createTableQuery.append(CRED_ID_DEFINITION);
-
-            }else{
+            if(tableName.equals("BS")){
                 createTableQuery.append(BORROWER_ID_DEFINITION);
             }
-
 
             for (String column : recordsColumns) {
                 createTableQuery.append(cleanColumnName(column, SPECIAL_CHARACTERS_REGEX,

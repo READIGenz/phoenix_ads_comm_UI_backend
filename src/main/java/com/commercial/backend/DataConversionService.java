@@ -65,13 +65,25 @@ public class DataConversionService {
 
             // Drop procedures if they exist
             dropProcedureIfExists(connection, commercialConstants.getTruncateAndDropProc());
-            dropProcedureIfExists(connection, commercialConstants.getMoveDataProc());
+            dropProcedureIfExists(connection, commercialConstants.getBorrowerProc());
+            dropProcedureIfExists(connection, commercialConstants.getAddressProc());
+            dropProcedureIfExists(connection, commercialConstants.getCreditFacilityProc());
+            dropProcedureIfExists(connection, commercialConstants.getDishonourProc());
+            dropProcedureIfExists(connection, commercialConstants.getGuarantorProc());
+            dropProcedureIfExists(connection, commercialConstants.getRelationshipProc());
+            dropProcedureIfExists(connection, commercialConstants.getSecurityProc());
 
-            // Execute truncate procedure
+
+            // Execute procedure
             executeStoredProcedure(connection, commercialConstants.getTruncateSqlPath(), commercialConstants.getTruncateAndDropProc());
+            executeStoredProcedure(connection, commercialConstants.getBorrowerSqlPath(), commercialConstants.getBorrowerProc());
+            executeStoredProcedure(connection, commercialConstants.getAddressSqlPath(), commercialConstants.getAddressProc());
+            executeStoredProcedure(connection, commercialConstants.getCreditFacilitySqlPath(), commercialConstants.getCreditFacilityProc());
+            executeStoredProcedure(connection, commercialConstants.getDishonourSqlPath(), commercialConstants.getDishonourProc());
+            executeStoredProcedure(connection, commercialConstants.getGuarantorSqlPath(), commercialConstants.getGuarantorProc());
+            executeStoredProcedure(connection, commercialConstants.getRelationshipSqlPath(), commercialConstants.getRelationshipProc());
+            executeStoredProcedure(connection, commercialConstants.getSecuritySqlPath(), commercialConstants.getSecurityProc());
 
-            // Execute data migration procedure
-            executeStoredProcedure(connection, commercialConstants.getMigrateSqlPath(), commercialConstants.getMoveDataProc());
 
             // Fetch record counts for the tables
             int borrowerSegCount = getTableCount(connection, commercialConstants.getBorrowerSegTable());

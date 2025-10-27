@@ -198,5 +198,47 @@ public class CommercialConstants {
 
     @Value("${app.duplicate-table-path}")
     private String duplicateTablePath;
+
+    // ========== Borrower Segment ==========
+    @Value("${migrate.sql.borrower}")
+    private String borrowerSqlPath;
+    @Value("${procedure.name.borrower}")
+    private String borrowerProc;
+
+    // ========== Address Segment ==========
+    @Value("${migrate.sql.address}")
+    private String addressSqlPath;
+    @Value("${procedure.name.address}")
+    private String addressProc;
+
+    // ========== Credit Facility Segment ==========
+    @Value("${migrate.sql.creditfacility}")
+    private String creditFacilitySqlPath;
+    @Value("${procedure.name.creditfacility}")
+    private String creditFacilityProc;
+
+    // ========== Dishonour of Cheque Segment ==========
+    @Value("${migrate.sql.dishonour}")
+    private String dishonourSqlPath;
+    @Value("${procedure.name.dishonour}")
+    private String dishonourProc;
+
+    // ========== Guarantor Segment ==========
+    @Value("${migrate.sql.guarantor}")
+    private String guarantorSqlPath;
+    @Value("${procedure.name.guarantor}")
+    private String guarantorProc;
+
+    // ========== Relationship Segment ==========
+    @Value("${migrate.sql.relationship}")
+    private String relationshipSqlPath;
+    @Value("${procedure.name.relationship}")
+    private String relationshipProc;
+
+    // ========== Security Segment ==========
+    @Value("${migrate.sql.security}")
+    private String securitySqlPath;
+    @Value("${procedure.name.security}")
+    private String securityProc;
 }
 
