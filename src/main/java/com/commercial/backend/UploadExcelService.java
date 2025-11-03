@@ -89,7 +89,7 @@ public class UploadExcelService {
 
                                 preparedStatement.addBatch();
 
-                                if(tableName.equals("BS")){
+                                if(tableName.equals("Borrower_Segment")){
                                     lineCount++;
                                 }
 
@@ -154,7 +154,7 @@ public class UploadExcelService {
 
             StringBuilder createTableQuery = new StringBuilder("CREATE TABLE " + tableName + " (");
 
-            if(tableName.equals("BS")){
+            if(tableName.equals("Borrower_Segment")){
                 createTableQuery.append(BORROWER_ID_DEFINITION);
             }
 
