@@ -154,17 +154,22 @@ public class UploadExcelService {
 
             StringBuilder createTableQuery = new StringBuilder("CREATE TABLE " + tableName + " (");
 
-            if(tableName.equals("Borrower_Segment")){
-                createTableQuery.append(BORROWER_ID_DEFINITION);
-            }
-
+            int colIndex = 1;
             for (String column : recordsColumns) {
-                createTableQuery.append(cleanColumnName(column, SPECIAL_CHARACTERS_REGEX,
-                        REPLACEMENT_CHAR, WHITESPACE_REGEX)).append(COLUMN_DEFINITION);
+                String cleaned = cleanColumnName(column, SPECIAL_CHARACTERS_REGEX,
+                        REPLACEMENT_CHAR, WHITESPACE_REGEX);
+
+                // Fix: assign default name if column becomes empty
+                if (cleaned == null || cleaned.trim().isEmpty() || cleaned.equals("_")) {
+                    cleaned = "Column_" + colIndex;
+                }
+
+                createTableQuery.append(cleaned).append(COLUMN_DEFINITION);
+                colIndex++;
             }
 
             createTableQuery.setLength(createTableQuery.length() - 1); // Remove last comma
-            createTableQuery.append(CLOSE_PARENTHESIS);
+            createTableQuery.append(")");
             statement.executeUpdate(createTableQuery.toString());
         }
     }
@@ -173,14 +178,31 @@ public class UploadExcelService {
         StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
         insertQuery.append(tableName).append(" (");
 
+        int colIndex = 1;
+        List<String> fixedColumns = new ArrayList<>();
+
         for (String column : recordsColumns) {
-            insertQuery.append(cleanColumnName(column, SPECIAL_CHARACTERS_REGEX,
-                    REPLACEMENT_CHAR, WHITESPACE_REGEX)).append(",");
+            String cleaned = cleanColumnName(column, SPECIAL_CHARACTERS_REGEX,
+                    REPLACEMENT_CHAR, WHITESPACE_REGEX);
+
+            // Fix: assign default name if column becomes empty
+            if (cleaned == null || cleaned.trim().isEmpty() || cleaned.equals("_")) {
+                cleaned = "Column_" + colIndex;
+            }
+
+            fixedColumns.add(cleaned);
+            colIndex++;
         }
-        insertQuery.setLength(insertQuery.length() - 1); // Remove last comma
+
+        // Append validated column names
+        for (String col : fixedColumns) {
+            insertQuery.append(col).append(",");
+        }
+        insertQuery.setLength(insertQuery.length() - 1);
         insertQuery.append(") VALUES (");
 
-        for (int i = 0; i < recordsColumns.length; i++) {
+        // Add placeholders
+        for (int i = 0; i < fixedColumns.size(); i++) {
             insertQuery.append("?,");
         }
         insertQuery.setLength(insertQuery.length() - 1);
@@ -188,6 +210,7 @@ public class UploadExcelService {
 
         return insertQuery.toString();
     }
+
 
     private String sanitizeColumnValue(String value) {
         if (value == null) return null;
